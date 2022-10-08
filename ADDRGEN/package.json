@@ -1,0 +1,18 @@
+{
+  "name": "fw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fwallet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "coinkey": "^3.0.0",
+    "keccak": "^2.0.0",
+    "randombytes": "^2.1.0",
+    "secp256k1": "^3.7.1",
+    "secure-random": "^1.1.2"
+  }
+}
