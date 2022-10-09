@@ -138,7 +138,10 @@ body {
       <li id="btn_connect_to_chain" onclick="connectToChain(3)">Connect Ropsten</li>
       <li id="btn_connect_to_chain" onclick="connectToChain(5)">Connect Goerli</li>
       <li id="btn_connect_to_chain" onclick="connectToChain(1337)">Connect Ganache</li>
-      <li id="btn_my_tokens" onclick="sendSomeCoins()">Send Some Coins A1->A2</li>
+      <div>
+      TO: <input type="text" id="to_addr" name="to_addr" value="0xa8EfE4417Edc9c2AcD6838dA75668F3C09Ef68d6"><br>
+      <li id="btn_my_tokens" onclick="send1Wei()">Send 1 wei from current address</li>
+      </div>
       
     </ul>
   </div>
@@ -153,6 +156,7 @@ body {
     <h1>Details</h1>
     
     <p style="color:grey;">Homework of Pavel Chekriy, HSE University, Faculty of Computer Science, 2022</p>
+    <div id="blockchain_info"></div>
   </div>
 
   
@@ -268,29 +272,35 @@ body {
     }
   }  
 
-  async function sendSomeCoins(){
-      
+  async function send1Wei(){
+
+    ethereum
+    .request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: account,
+          to: document.getElementById('to_addr').value,
+          value: '0x1'
+        },
+      ],
+    })
+    .then((txHash) => setMsg('msg','transactionHash is ' + txHashj) )
+    .catch((error) => setMsg('msg','transaction failed','block','red')  )
+
+    
+    
+    
   }
 
  
 
   async function showDetails(){
       document.getElementById('about').style.display = 'block';   
-  /*     if (tokenId > 216 || tokenId < 1){
-      document.getElementById('img_holder').innerHTML = 'not valid token ID; valid range 1 - 216';
-      document.getElementById('img_data_holder').innerHTML = '';
-    } else {
-      document.getElementById("token_id").value = tokenId;
-      document.getElementById("token_progress").innerHTML = tokenId.toString()+' out of 216';
-      document.getElementById('img_holder').innerHTML = genSVG(tokenId);
-      document.getElementById('img_data_holder').innerHTML = '<p>Token id: '+tokenId.toString()+'</p><p>Circle color: '+getColor(tokenId)+'</p>';
-      if (await nft_contract.exist(tokenId)){
-            document.getElementById('minted_status').innerHTML = 'MINTED';
-      } else {
-            document.getElementById('minted_status').innerHTML = 'AVAILABLE'; 
-      }
-    
-    }  */
+      document.getElementById('blockchain_info').innerHTML = 'block number: '+(await provider.getBlockNumber()).toString()+'<br><br>';
+      document.getElementById('blockchain_info').innerHTML += 'current account balance: '+ ethers.utils.formatEther(await provider.getBalance(account))+'<br><br>';
+      document.getElementById('blockchain_info').innerHTML += 'block info: '+JSON.stringify(await provider.getBlock(),null,2)+'<br><br>';
+  
   }
 
  
